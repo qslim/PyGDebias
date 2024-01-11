@@ -378,7 +378,7 @@ class NIFTY(torch.nn.Module):
 
         return sim_loss, l3 + l4
 
-    def fit_GNN(self, epochs=300):
+    def fit_GNN(self, epochs=1000):
         best_loss = 100
         for epoch in range(epochs + 1):
 
@@ -421,7 +421,7 @@ class NIFTY(torch.nn.Module):
 
 
 
-    def fit(self, epochs=300):
+    def fit(self, epochs=1000):
 
 
 

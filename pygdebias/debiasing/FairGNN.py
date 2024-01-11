@@ -36,7 +36,7 @@ def get_model(nfeat, args):
 
 class FairGNN(nn.Module):
     def __init__(
-        self, nfeat, sim_coeff=0.6, n_order=10, subgraph_size=30, acc=0.69, epoch=2000
+        self, nfeat, sim_coeff=0.6, n_order=10, subgraph_size=30, acc=0.69, epoch=1000
     ):
         super(FairGNN, self).__init__()
 
@@ -109,10 +109,31 @@ class FairGNN(nn.Module):
         )  # train, cf, test
 
         args = parser.parse_known_args()[0]
-        args.num_hidden = 64
-        args.alpha = 4
-        args.beta = 0.01
-        args.acc = args.roc = acc
+
+        # Credit
+        args.num_hidden = 128
+        args.alpha = 100.0
+        args.beta = 200.0
+        args.acc = args.roc = 0.0
+
+        # # German
+        # args.num_hidden = 64
+        # args.alpha = 100.0
+        # args.beta = 10.0
+        # args.acc = args.roc = 0.0
+
+        # # Bail
+        # args.num_hidden = 128
+        # args.alpha = 200.0
+        # args.beta = 1.0
+        # args.acc = args.roc = 0.0
+        
+        # # Pokec_z
+        # args.num_hidden = 64
+        # args.alpha = 100.0
+        # args.beta = 1.0
+        # args.acc = args.roc = 0.0
+        # args.epochs = 2000
 
         nhid = args.num_hidden
         dropout = args.dropout

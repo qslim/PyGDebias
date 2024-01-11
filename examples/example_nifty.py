@@ -1,11 +1,12 @@
-from pygdebias.debiasing import FairGNN
+import sys
+sys.path.append('..')
+from pygdebias.debiasing import NIFTY
 from pygdebias.datasets import Bail
 
 import numpy as np
 from collections import defaultdict
 import torch
 import random
-
 
 def setup_seed(seed):
     torch.manual_seed(seed)
@@ -18,7 +19,7 @@ def setup_seed(seed):
 setup_seed(11)
 
 bail = Bail()
-adj, feats, idx_train, idx_val, idx_test, labels, sens = (
+adj, feats, idx_train, idx_val, idx_test, labels, sens, sens_idx = (
     bail.adj(),
     bail.features(),
     bail.idx_train(),
@@ -26,27 +27,13 @@ adj, feats, idx_train, idx_val, idx_test, labels, sens = (
     bail.idx_test(),
     bail.labels(),
     bail.sens(),
+    bail.sens_idx()
 )
 
-
-params = {
-    "sim_coeff": 0.4,
-    "n_order": 15,
-    "subgraph_size": 20,
-    "acc": 0.84,
-    "epoch": 500,
-}
-
 # Initiate the model (with searched parameters).
-model = FairGNN(
-    feats.shape[-1],
-    sim_coeff=params["sim_coeff"],
-    acc=params["acc"],
-    n_order=params["n_order"],
-    subgraph_size=params["subgraph_size"],
-    epoch=params["epoch"],
-).cuda()
-model.fit(adj, feats, labels, idx_train, idx_val, idx_test, sens, idx_train)
+model = NIFTY(
+    adj, feats, labels, idx_train, idx_val, idx_test, sens, sens_idx, num_hidden=128, num_proj_hidden=128, lr=0.001, weight_decay=1e-5, drop_edge_rate_1=0.1, drop_edge_rate_2=0.1, drop_feature_rate_1=0.1, drop_feature_rate_2=0.1, encoder="gcn", sim_coeff=0.5, nclass=1, device="cuda").cuda()
+model.fit()
 
 
 # Evaluate the model.
@@ -63,7 +50,7 @@ model.fit(adj, feats, labels, idx_train, idx_val, idx_test, sens, idx_train)
     F1_sens1,
     SP,
     EO,
-) = model.predict(idx_test)
+) = model.predict()
 
 print("ACC:", ACC)
 print("AUCROC: ", AUCROC)
