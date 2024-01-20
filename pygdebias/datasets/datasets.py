@@ -1250,7 +1250,7 @@ class German(Dataset):
         idx_val = torch.LongTensor(idx_val)
         idx_test = torch.LongTensor(idx_test)
         labels = torch.LongTensor(labels)
-        features = self.feature_norm(features)
+        # features = self.feature_norm(features)
         adj = mx_to_torch_sparse_tensor(adj, is_sparse=True)
         self.adj_ = adj
         self.features_ = features
