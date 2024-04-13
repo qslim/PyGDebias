@@ -879,28 +879,29 @@ class EDITS(nn.Module):
 
             # ACC_sens0, AUCROC_sens0, F1_sens0, ACC_sens1, AUCROC_sens1, F1_sens1=self.predict_sens_group(output, idx_test)
             sens = self.sens
+
             SP, EO = self.fair_metric_direct(
                 output_preds,
-                labels[idx_test].detach().cpu().numpy(),
-                sens[idx_test].detach().cpu().numpy(),
+                labels[idx_test.cpu().numpy()].detach().cpu().numpy(),
+                sens[idx_test.cpu().numpy()].detach().cpu().numpy(),
             )
 
             pred = output_preds
             result = []
             for sens in [0, 1]:
                 F1 = f1_score(
-                    self.labels[idx_test][self.sens[idx_test] == sens],
-                    pred[self.sens[idx_test] == sens],
+                    self.labels[idx_test.cpu().numpy()][self.sens[idx_test.cpu().numpy()] == sens],
+                    pred[self.sens[idx_test.cpu().numpy()] == sens],
                     average="micro",
                 )
                 ACC = accuracy_score(
-                    self.labels[idx_test][self.sens[idx_test] == sens],
-                    pred[self.sens[idx_test] == sens],
+                    self.labels[idx_test.cpu().numpy()][self.sens[idx_test.cpu().numpy()] == sens],
+                    pred[self.sens[idx_test.cpu().numpy()] == sens],
                 )
                 try:
                     AUCROC = roc_auc_score(
-                        self.labels[idx_test][self.sens[idx_test] == sens],
-                        pred[self.sens[idx_test] == sens],
+                        self.labels[idx_test.cpu().numpy()][self.sens[idx_test.cpu().numpy()] == sens],
+                        pred[self.sens[idx_test.cpu().numpy()] == sens],
                     )
                 except:
                     AUCROC = "N/A"
