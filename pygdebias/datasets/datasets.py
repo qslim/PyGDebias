@@ -1329,6 +1329,9 @@ class German(Dataset):
         header.remove("OtherLoansAtStore")
         header.remove("PurposeOfLoan")
 
+        # sensitive feature removal
+        header.remove('Gender')
+
         # Sensitive Attribute
         idx_features_labels["Gender"][idx_features_labels["Gender"] == "Female"] = 1
         idx_features_labels["Gender"][idx_features_labels["Gender"] == "Male"] = 0
@@ -1457,6 +1460,9 @@ class Bail(Dataset):
         header = list(idx_features_labels.columns)
         header.remove(predict_attr)
 
+        # sensitive feature removal
+        header.remove('WHITE')
+
         # build relationship
 
         edges_unordered = np.genfromtxt(
@@ -1584,6 +1590,9 @@ class Credit(Dataset):
         header = list(idx_features_labels.columns)
         header.remove(predict_attr)
         header.remove("Single")
+
+        # sensitive feature removal
+        header.remove('Age')
 
         # build relationship
         edges_unordered = np.genfromtxt(
