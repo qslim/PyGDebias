@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 from pygdebias.debiasing import FairGNN
-from pygdebias.datasets import Bail
+from pygdebias.datasets import German
 
 import numpy as np
 from collections import defaultdict
@@ -19,7 +19,7 @@ def setup_seed(seed):
 
 setup_seed(11)
 
-bail = Bail()
+bail = German()
 adj, feats, idx_train, idx_val, idx_test, labels, sens = (
     bail.adj(),
     bail.features(),

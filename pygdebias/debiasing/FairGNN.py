@@ -36,7 +36,7 @@ def get_model(nfeat, args):
 
 class FairGNN(nn.Module):
     def __init__(
-        self, nfeat, sim_coeff=0.6, n_order=10, subgraph_size=30, acc=0.69, epoch=1000
+        self, nfeat, sim_coeff=0.6, n_order=10, subgraph_size=30, acc=0.69, epoch=2000
     ):
         super(FairGNN, self).__init__()
 
